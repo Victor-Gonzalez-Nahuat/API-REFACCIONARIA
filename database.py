@@ -1,7 +1,6 @@
 import pymysql
 import os
 
-# Obtener las credenciales desde las variables de entorno
 DB_HOST = os.getenv('DB_HOST')
 DB_USER = os.getenv('DB_USER')
 DB_PASSWORD = os.getenv('DB_PASSWORD')
@@ -21,7 +20,6 @@ def obtenerProductosPorCodigo(codigo):
     conn = get_connection()
     cursor = conn.cursor()
 
-    # 1. Obtener datos de INARMA01
     cursor.execute("""
         SELECT id_codigo, id_descripcion, id_grupo, id_maximo, id_minimo, id_lista1, id_provee
         FROM INARMA01
@@ -35,7 +33,6 @@ def obtenerProductosPorCodigo(codigo):
 
     codigo, nombre, grupo, maximo, minimo, precio_lista, id_proveedor = arma
 
-    # 2. Obtener datos de INARAR01
     cursor.execute("""
         SELECT dt_sadoinicial, dt_entradas, dt_salidas, dt_ultimo_costo, dt_ultima_venta
         FROM INARAR01
@@ -51,7 +48,6 @@ def obtenerProductosPorCodigo(codigo):
         ultimo_costo = None
         ultima_venta = None
 
-    # 3. Obtener nombre del proveedor desde PRARMA01
     cursor.execute("""
         SELECT dt_cliente
         FROM PRARMA01
@@ -62,7 +58,6 @@ def obtenerProductosPorCodigo(codigo):
 
     conn.close()
 
-    # 4. Consolidar respuesta
     return {
         "codigo": codigo,
         "nombre": nombre,
@@ -87,6 +82,6 @@ def obtenerLosPrimerosProductos(limit):
     for row in rows:
         productos.append({
             "codigo": row[1],
-            "nombre": row[3]  # Asumimos que el nombre está en la cuarta columna
+            "nombre": row[3]  
         })
     return productos

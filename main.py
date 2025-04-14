@@ -3,10 +3,8 @@ from database import obtenerLosPrimerosProductos, obtenerProductosPorCodigo
 from dotenv import load_dotenv
 import os
 
-# Cargar las variables de entorno
 load_dotenv()
 
-# Obtener las credenciales de la base de datos desde las variables de entorno
 DB_HOST = os.getenv('DB_HOST')
 DB_USER = os.getenv('DB_USER')
 DB_PASSWORD = os.getenv('DB_PASSWORD')
