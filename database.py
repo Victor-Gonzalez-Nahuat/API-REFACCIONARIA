@@ -17,7 +17,7 @@ def get_connection():
         port=DB_PORT
     )
 
-def obtenerProductoCompletoPorCodigo(codigo):
+def obtenerProductosPorCodigo(codigo):
     conn = get_connection()
     cursor = conn.cursor()
 
