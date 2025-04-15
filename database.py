@@ -56,14 +56,14 @@ def obtenerProductosPorCodigo(codigo):
     codigo, nombre, grupo, maximo, minimo, precio_lista, id_proveedor = arma
 
     cursor.execute("""
-        SELECT dt_sadoinicial, dt_entradas, dt_salidas, dt_ultimo_costo, dt_ultima_venta
+        SELECT dt_sadoinicial, dt_entradas, dt_salidas, dt_ultimo_costo, dt_ultima_venta, dt_ultima_compra
         FROM INARAR01
         WHERE dt_codigo = %s
     """, (codigo,))
     arar = cursor.fetchone()
 
     if arar:
-        saldo_inicial, entradas, salidas, ultimo_costo, ultima_venta = arar
+        saldo_inicial, entradas, salidas, ultimo_costo, ultima_venta, ultima_compra = arar
         existencia = (saldo_inicial or 0) + (entradas or 0) - (salidas or 0)
     else:
         existencia = None
@@ -90,6 +90,7 @@ def obtenerProductosPorCodigo(codigo):
         "existencia": existencia,
         "ultimo_costo": ultimo_costo,
         "ultima_venta": ultima_venta,
+        "ultima_compra": ultima_compra,
         "proveedor": nombre_proveedor
     }
 
