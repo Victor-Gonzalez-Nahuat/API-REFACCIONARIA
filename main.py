@@ -12,28 +12,6 @@ DB_NAME = os.getenv('DB_NAME')
 
 app = FastAPI()
 
-@app.get("/", response_class=HTMLResponse)
-async def root():
-    return """
-    <!DOCTYPE html>
-    <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta property="og:title" content="Catálogo de Refaccionaria Falla" />
-        <meta property="og:description" content="Consulta productos actualizados." />
-        <meta property="og:image" content="https://i.ibb.co/8LxBQKh2/images.png" />
-        <meta property="og:url" content="https://web-refaccionaria-production.up.railway.app/" />
-        <meta name="twitter:card" content="summary_large_image">
-        <title>Catálogo Refaccionaria</title>
-    </head>
-    <body>
-        <script>
-            window.location.href = "https://web-refaccionaria-production.up.railway.app/";
-        </script>
-    </body>
-    </html>
-    """
-
 @app.get("/producto/{codigo}")
 async def buscar_producto(codigo: str):
     producto = obtenerProductosPorCodigo(codigo)
