@@ -25,7 +25,7 @@ def obtenerProductosPorNombre(nombre):
         FROM INARMA01 
         WHERE id_descripcion LIKE %s
         ORDER BY id_descripcion ASC
-        LIMIT 50
+        LIMIT 100
     """, (nombre + '%',)) 
 
     resultados = cursor.fetchall()
