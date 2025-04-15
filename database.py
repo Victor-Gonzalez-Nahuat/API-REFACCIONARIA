@@ -21,21 +21,21 @@ def obtenerProductosPorNombre(nombre):
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT id_codigo, id_descripcion FROM INARMA01 WHERE id_descripcion = %s
-        """, (nombre,))
-    arma = cursor.fetchone()
+        SELECT id_codigo, id_descripcion 
+        FROM INARMA01 
+        WHERE id_descripcion LIKE %s
+        ORDER BY id_descripcion ASC
+        LIMIT 50
+    """, (nombre + '%',)) 
 
-    if not arma:
-        conn.close()
-        return None
-    
-    codigo, nombre = arma
+    resultados = cursor.fetchall()
     conn.close()
-    
-    return {
-        "codigo": codigo,
-        "nombre": nombre
-    }
+
+    if not resultados:
+        return None
+
+    productos = [{"codigo": codigo, "nombre": descripcion} for codigo, descripcion in resultados]
+    return productos
 
 
 def obtenerProductosPorCodigo(codigo):
