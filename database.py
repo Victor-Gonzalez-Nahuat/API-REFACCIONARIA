@@ -16,6 +16,28 @@ def get_connection():
         port=DB_PORT
     )
 
+def obtenerProductosPorNombre(nombre):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT id_codigo, id_descripcion FROMM INARMA01 WHERE id_descripcion = %s
+        """, (nombre,))
+    arma = cursor.fetchone()
+
+    if not arma:
+        conn.close()
+        return None
+    
+    codigo, nombre = arma
+    conn.close()
+    
+    return {
+        "codigo": codigo,
+        "nombre": nombre
+    }
+
+
 def obtenerProductosPorCodigo(codigo):
     conn = get_connection()
     cursor = conn.cursor()
@@ -30,7 +52,7 @@ def obtenerProductosPorCodigo(codigo):
     if not arma:
         conn.close()
         return None
-
+    
     codigo, nombre, grupo, maximo, minimo, precio_lista, id_proveedor = arma
 
     cursor.execute("""

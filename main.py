@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from database import obtenerLosPrimerosProductos, obtenerProductosPorCodigo
+from database import obtenerLosPrimerosProductos, obtenerProductosPorCodigo, obtenerProductosPorNombre
 from dotenv import load_dotenv
 import os
 
@@ -25,3 +25,10 @@ async def obtener_productos(limit: int = 10):
     if productos:
         return productos
     return {"mensaje": "No se encontraron productos"}
+
+@app.get("/producto/nombre/{nombre}")
+async def obtener_codigo(nombre: str):
+    codigo = obtenerProductosPorNombre(nombre)
+    if codigo:
+        return codigo
+    return {"mensaje": "Codigo no encontrado"}
