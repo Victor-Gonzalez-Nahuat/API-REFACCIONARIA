@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from database import obtenerLosPrimerosProductos, obtenerProductosPorCodigo, obtenerProductosPorNombre
 from dotenv import load_dotenv
 import os
@@ -17,18 +17,18 @@ async def buscar_producto(codigo: str):
     producto = obtenerProductosPorCodigo(codigo)
     if producto:
         return producto
-    return {"mensaje": "Producto no encontrado"}, 404
+    raise HTTPException(status_code=404, detail="Producto no encontrado")
 
 @app.get("/productos/")
 async def obtener_productos(limit: int = 10):
     productos = obtenerLosPrimerosProductos(limit)
     if productos:
         return productos
-    return {"mensaje": "No se encontraron productos"}, 404
+    raise HTTPException(status_code=404, detail="No se encontraron productos")
 
 @app.get("/producto/nombre/{nombre}")
 async def obtener_codigo(nombre: str):
     codigo = obtenerProductosPorNombre(nombre)
     if codigo:
         return codigo
-    return {"mensaje": "Codigo no encontrado"}, 404
+    raise HTTPException(status_code=404, detail="Código no encontrado")
