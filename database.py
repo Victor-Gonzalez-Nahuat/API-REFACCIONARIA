@@ -21,7 +21,7 @@ def obtenerProductosPorNombre(nombre):
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT id_codigo, id_descripcion FROMM INARMA01 WHERE id_descripcion = %s
+        SELECT id_codigo, id_descripcion FROM INARMA01 WHERE id_descripcion = %s
         """, (nombre,))
     arma = cursor.fetchone()
 
