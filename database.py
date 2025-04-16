@@ -25,9 +25,10 @@ def obtenerOfertas():
     hoy_aammdd = int(hoy.strftime("%y%m%d"))
 
     cursor.execute("""
-        SELECT of_codigo, of_fecha, of_imagen, of_observaciones
-        FROM INAROF01
-        WHERE of_fecha > %s
+        SELECT o.of_codigo, o.of_fecha, o.of_imagen, o.of_observaciones, p.ma_nombre
+        FROM INAROF01 o
+        JOIN INARMA01 p ON o.of_codigo = p.ma_codigo
+        WHERE o.of_fecha > %s
     """, (hoy_aammdd,))
 
     resultados = cursor.fetchall()
@@ -37,11 +38,13 @@ def obtenerOfertas():
         return None
 
     ofertas = [{
-        "codigo": codigo,
+        "nombre": nombre,
         "fecha": fecha,
         "imagen": imagen,
-        "observaciones": observaciones
-    } for codigo, fecha, imagen, observaciones in resultados]
+        "observaciones": observaciones,
+        "codigo": codigo,
+        
+    } for codigo, fecha, imagen, observaciones, nombre in resultados]
 
     return ofertas
 
