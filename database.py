@@ -1,5 +1,6 @@
 import pymysql
 import os
+from datetime import date
 
 DB_HOST = os.getenv('DB_HOST')
 DB_USER = os.getenv('DB_USER')
@@ -15,6 +16,34 @@ def get_connection():
         database=DB_NAME,
         port=DB_PORT
     )
+
+def obtenerOfertas():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    hoy = date.today()
+    hoy_aammdd = int(hoy.strftime("%y%m%d"))
+
+    cursor.execute("""
+        SELECT of_codigo, of_fecha, of_imagen, of_observaciones
+        FROM INAROF01
+        WHERE of_fecha > %s
+    """, (hoy_aammdd,))
+
+    resultados = cursor.fetchall()
+    conn.close()
+
+    if not resultados:
+        return None
+
+    ofertas = [{
+        "codigo": codigo,
+        "fecha": fecha,
+        "imagen": imagen,
+        "observaciones": observaciones
+    } for codigo, fecha, imagen, observaciones in resultados]
+
+    return ofertas
 
 def obtenerProductosPorNombre(nombre):
     conn = get_connection()

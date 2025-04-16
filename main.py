@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from database import obtenerLosPrimerosProductos, obtenerProductosPorCodigo, obtenerProductosPorNombre
+from database import obtenerLosPrimerosProductos, obtenerProductosPorCodigo, obtenerProductosPorNombre, obtenerOfertas
 from dotenv import load_dotenv
 import os
 
@@ -11,6 +11,13 @@ DB_PASSWORD = os.getenv('DB_PASSWORD')
 DB_NAME = os.getenv('DB_NAME')
 
 app = FastAPI()
+
+@app.get("/ofertas/")
+async def buscar_ofertas():
+    ofertas = obtenerOfertas()
+    if ofertas:
+        return ofertas
+    raise HTTPException(status_code=404, detail="No se encontraron ofertas")
 
 @app.get("/producto/{codigo}")
 async def buscar_producto(codigo: str):
