@@ -25,7 +25,7 @@ def obtenerOfertas():
     hoy_aammdd = int(hoy.strftime("%y%m%d"))
 
     cursor.execute("""
-        SELECT o.of_codigo, o.of_fecha, o.of_imagen, o.of_observaciones, p.id_descripcion
+        SELECT o.of_codigo, o.of_fecha, o.of_imagen, o.of_observaciones, p.id_descripcion, p.id_lista
         FROM INAROF01 o
         JOIN INARMA01 p ON o.of_codigo = p.id_codigo
         WHERE o.of_fecha > %s
@@ -39,12 +39,13 @@ def obtenerOfertas():
 
     ofertas = [{
         "nombre": nombre,
+        "precio": precio,
         "fecha": fecha,
         "imagen": imagen,
         "observaciones": observaciones,
         "codigo": codigo,
         
-    } for codigo, fecha, imagen, observaciones, nombre in resultados]
+    } for codigo, fecha, imagen, observaciones, nombre, precio in resultados]
 
     return ofertas
 
